@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"import docx; print\\(''ok''\\)\")",
+      "Bash(python gerar_esteira.py)",
+      "Bash(start \"\" \"c:/Users/borge/Downloads/Esteira_Agencia_v4_0_MELHORADA.docx\")"
+    ]
+  }
+}

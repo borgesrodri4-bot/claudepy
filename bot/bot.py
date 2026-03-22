@@ -133,7 +133,10 @@ async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Ocorreu um erro inesperado. Tente novamente.")
 
 
-def main() -> None:
+import asyncio
+
+
+async def main_async() -> None:
     if not TELEGRAM_TOKEN:
         raise ValueError("TELEGRAM_TOKEN não definido no arquivo .env")
     if not ANTHROPIC_API_KEY:
@@ -147,8 +150,18 @@ def main() -> None:
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, responder))
 
     logger.info("Bot iniciado. Aguardando mensagens...")
-    app.run_polling()
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    try:
+        await asyncio.Event().wait()
+    finally:
+        await app.updater.stop()
+        await app.stop()
+        await app.shutdown()
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main_async())
